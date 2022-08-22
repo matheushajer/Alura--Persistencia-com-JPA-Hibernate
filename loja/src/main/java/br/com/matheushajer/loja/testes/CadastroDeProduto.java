@@ -1,13 +1,8 @@
 package br.com.matheushajer.loja.testes;
 
-import java.math.BigDecimal;
-
 import javax.persistence.EntityManager;
 
-import br.com.matheushajer.loja.dao.CategoriaDAO;
-import br.com.matheushajer.loja.dao.ProdutoDAO;
 import br.com.matheushajer.loja.modelo.Categoria;
-import br.com.matheushajer.loja.modelo.Produto;
 import br.com.matheushajer.loja.util.JPAUtil;
 
 public class CadastroDeProduto {
@@ -35,5 +30,9 @@ public class CadastroDeProduto {
 		celulares = em.merge(celulares);
 		celulares.setNome("TesteAposFechamento");
 		em.flush();
+		
+		em.remove(celulares);
+		em.flush();
+		
 	}
 }
