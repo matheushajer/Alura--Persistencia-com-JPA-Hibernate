@@ -16,18 +16,22 @@ public class CadastroDeProduto {
 		
 		Categoria celulares = new Categoria("Celulares");
 		
-		Produto celular = new Produto("Redmi", "Modelo novo", new BigDecimal("800"), celulares );
+		//Produto celular = new Produto("Redmi", "Modelo novo", new BigDecimal("800"), celulares );
 		
 		EntityManager em = JPAUtil.getEntityManager();
-		ProdutoDAO produtoDAO = new ProdutoDAO(em);
-		CategoriaDAO categoriaDAO = new CategoriaDAO(em);
+		//ProdutoDAO produtoDAO = new ProdutoDAO(em);
+		//CategoriaDAO categoriaDAO = new CategoriaDAO(em);
 		
 		em.getTransaction().begin();
+		em.persist(celulares);
+		celulares.setNome("testePreFechamento");
 		
-		categoriaDAO.cadastrar(celulares);
-		produtoDAO.cadastrar(celular);
+		//categoriaDAO.cadastrar(celulares);
+		//produtoDAO.cadastrar(celular);
 		
 		em.getTransaction().commit();
 		em.close();
+		
+		celulares.setNome("TesteAposFechamento");
 	}
 }
