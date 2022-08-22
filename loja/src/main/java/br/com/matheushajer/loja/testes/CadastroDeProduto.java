@@ -29,9 +29,11 @@ public class CadastroDeProduto {
 		//categoriaDAO.cadastrar(celulares);
 		//produtoDAO.cadastrar(celular);
 		
-		em.getTransaction().commit();
-		em.close();
+		em.flush();
+		em.clear();;
 		
+		celulares = em.merge(celulares);
 		celulares.setNome("TesteAposFechamento");
+		em.flush();
 	}
 }
