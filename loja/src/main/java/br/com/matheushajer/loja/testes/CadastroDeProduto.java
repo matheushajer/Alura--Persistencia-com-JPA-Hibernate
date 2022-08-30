@@ -1,38 +1,47 @@
 package br.com.matheushajer.loja.testes;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 
+import br.com.matheushajer.loja.dao.CategoriaDAO;
+import br.com.matheushajer.loja.dao.ProdutoDAO;
 import br.com.matheushajer.loja.modelo.Categoria;
+import br.com.matheushajer.loja.modelo.Produto;
 import br.com.matheushajer.loja.util.JPAUtil;
 
 public class CadastroDeProduto {
 
 	public static void main(String[] args) {
 		
-		Categoria celulares = new Categoria("Celulares");
-		
-		//Produto celular = new Produto("Redmi", "Modelo novo", new BigDecimal("800"), celulares );
+		cadastrarProduto();
 		
 		EntityManager em = JPAUtil.getEntityManager();
-		//ProdutoDAO produtoDAO = new ProdutoDAO(em);
-		//CategoriaDAO categoriaDAO = new CategoriaDAO(em);
+		ProdutoDAO dao = new ProdutoDAO(em);
+		
+		Produto produto = dao.buscarPorId(1L);
+		System.out.println(produto.getPreco());
+		
+		List<Produto> todos = dao.buscarTodos();
+		
+		todos.forEach(p -> System.out.println(p.getNome()));
+	}
+
+	private static void cadastrarProduto() {
+		Categoria celulares = new Categoria("CELULARES");
+		Produto celular = new Produto("Xiaomi Redmi", "Modelo novo", new BigDecimal("800"), celulares );
+		
+		EntityManager em = JPAUtil.getEntityManager();
+		ProdutoDAO produtoDao = new ProdutoDAO(em);
+		CategoriaDAO categoriaDao = new CategoriaDAO(em);
 		
 		em.getTransaction().begin();
-		em.persist(celulares);
-		celulares.setNome("testePreFechamento");
 		
-		//categoriaDAO.cadastrar(celulares);
-		//produtoDAO.cadastrar(celular);
+		categoriaDao.cadastrar(celulares);
+		produtoDao.cadastrar(celular);
 		
-		em.flush();
-		em.clear();;
-		
-		celulares = em.merge(celulares);
-		celulares.setNome("TesteAposFechamento");
-		em.flush();
-		
-		em.remove(celulares);
-		em.flush();
-		
+		em.getTransaction().commit();
+		em.close();
 	}
 }
